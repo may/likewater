@@ -28,7 +28,10 @@ jobs:
 
     - name: Install dependencies on macOS
       if: matrix.os == 'macos-latest'
-      run: brew install gambit-scheme
+      # ghostscript also installs 'gsc', so remove it first..
+      run: |
+        brew unlink ghostscript 
+        brew install gambit-scheme
 
     - name: Install dependencies on Windows
       if: matrix.os == 'windows-latest'
