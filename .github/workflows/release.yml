@@ -1,0 +1,44 @@
+name: Build Scheme Program
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Compile Scheme Program
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt update
+        sudo apt install gambc -y
+
+    - name: Install dependencies on macOS
+      if: matrix.os == 'macos-latest'
+      run: brew install gambit-scheme
+
+    - name: Install dependencies on Windows
+      if: matrix.os == 'windows-latest'
+      run: choco install gambit
+
+    - name: Compile Scheme Program with Gambit Scheme
+      run: gsc -exe main.scm
+
+    - name: Upload executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: compiled-program-${{ matrix.os }}
+        path: main.exe
