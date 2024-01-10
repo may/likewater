@@ -37,8 +37,13 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: choco install gambit
 
-    - name: Compile Scheme Program with Gambit Scheme
+    - name: Compile Scheme Program with Gambit Scheme on non-Windows
+      if: matrix.os != 'windows-latest'
       run: gsc -exe main.scm
+
+    - name: Compile Scheme Program with Gambit Scheme on Windows
+      if: matrix.os == 'windows-latest'
+      run: C:\ProgramData\chocolatey\lib\gambit\gsc -exe main.scm
 
     - name: Upload executable for Windows
       if: matrix.os == 'windows-latest'
@@ -54,7 +59,7 @@ jobs:
         name: compiled-program-${{ matrix.os }}
         path: main
         
-    - name: Upload executable for Macos
+    - name: Upload executable for MacOS
       if: matrix.os == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
