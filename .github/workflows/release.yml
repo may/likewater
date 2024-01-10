@@ -40,8 +40,23 @@ jobs:
     - name: Compile Scheme Program with Gambit Scheme
       run: gsc -exe main.scm
 
-    - name: Upload executable
+    - name: Upload executable for Windows
+      if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v2
       with:
         name: compiled-program-${{ matrix.os }}
         path: main.exe
+    
+    - name: Upload executable for GNU/Linux
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: compiled-program-${{ matrix.os }}
+        path: main
+        
+    - name: Upload executable for Macos
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: compiled-program-${{ matrix.os }}
+        path: main
