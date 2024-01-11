@@ -40,7 +40,7 @@ jobs:
 
     - name: Compile Scheme Program with Chicken Scheme on Windows
       if: matrix.os == 'windows-latest'
-      run: C:\tools\chicken\csc -static main.scm 
+      run: C:\tools\chicken\bin\csc -static main.scm 
 
     - name: Upload executable for Windows
       if: matrix.os == 'windows-latest'
