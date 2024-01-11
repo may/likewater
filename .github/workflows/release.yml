@@ -32,8 +32,10 @@ jobs:
 
     - name: Install dependencies on Windows
       if: matrix.os == 'windows-latest'
-      run: choco install chicken
-
+      run: |
+        choco install chicken
+        refreshenv
+        
     - name: Compile Scheme Program with Chicken Scheme on non-Windows
       if: matrix.os != 'windows-latest'
       run: csc -static main.scm
