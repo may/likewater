@@ -40,9 +40,9 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: csc -static main.scm
 
-    - name: Compile Scheme Program with Gambit Scheme on Windows
+    - name: Compile Scheme Program with Chicken Scheme on Windows
       if: matrix.os == 'windows-latest'
-      run: csc -static main.scm # TODO if works, combine w/ above
+      run: C:\tools\chicken\csc -static main.scm 
 
     - name: Upload executable for Windows
       if: matrix.os == 'windows-latest'
