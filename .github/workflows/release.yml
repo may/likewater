@@ -32,7 +32,9 @@ jobs:
 
     - name: Install dependencies on Windows
       if: matrix.os == 'windows-latest'
-      run: choco install chicken
+      run: |
+        choco install mingw --version 11.2.0.07112021 --allow-downgrade
+        choco install chicken
         
     - name: Compile Scheme Program with Chicken Scheme on non-Windows
       if: matrix.os != 'windows-latest'
