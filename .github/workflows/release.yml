@@ -24,44 +24,35 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt update
-        sudo apt install gambc -y
+        sudo apt install chicken-bin -y
 
     - name: Install dependencies on macOS
       if: matrix.os == 'macos-latest'
-      # ghostscript also installs 'gsc', so remove it first..
-      run: |
-        brew unlink ghostscript 
-        brew install gambit-scheme
+      run: brew install chicken
 
     - name: Install dependencies on Windows
       if: matrix.os == 'windows-latest'
-      run: choco install gambit
+      run: choco install chicken
 
-    - name: Compile Scheme Program with Gambit Scheme on non-Windows
+    - name: Compile Scheme Program with Chicken Scheme on non-Windows
       if: matrix.os != 'windows-latest'
-      run: gsc -exe main.scm
+      run: csc -static main.scm
 
     - name: Compile Scheme Program with Gambit Scheme on Windows
       if: matrix.os == 'windows-latest'
-      run: C:\ProgramData\chocolatey\lib\gambit\gsc -exe main.scm
+      run: csc -static main.scm # TODO if works, combine w/ above
 
     - name: Upload executable for Windows
       if: matrix.os == 'windows-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: compiled-program-${{ matrix.os }}
         path: main.exe
     
-    - name: Upload executable for GNU/Linux
-      if: matrix.os == 'ubuntu-latest'
-      uses: actions/upload-artifact@v2
+    - name: Upload executable for non-Windows
+      if: matrix.os != 'windows-latest'
+      uses: actions/upload-artifact@v3
       with:
         name: compiled-program-${{ matrix.os }}
         path: main
-        
-    - name: Upload executable for MacOS
-      if: matrix.os == 'macos-latest'
-      uses: actions/upload-artifact@v2
-      with:
-        name: compiled-program-${{ matrix.os }}
-        path: main
+ 
