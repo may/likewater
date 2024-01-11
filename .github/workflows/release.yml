@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-2019]
 
     steps:
     - uses: actions/checkout@v3
@@ -35,22 +35,22 @@ jobs:
       run: choco install chicken
         
     - name: Compile Scheme Program with Chicken Scheme on non-Windows
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows-2019'
       run: csc -static main.scm
 
     - name: Compile Scheme Program with Chicken Scheme on Windows
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       run: C:\tools\chicken\bin\csc -static main.scm 
 
     - name: Upload executable for Windows
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       uses: actions/upload-artifact@v3
       with:
         name: compiled-program-${{ matrix.os }}
         path: main.exe
     
     - name: Upload executable for non-Windows
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows-2019'
       uses: actions/upload-artifact@v3
       with:
         name: compiled-program-${{ matrix.os }}
